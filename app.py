@@ -65,11 +65,18 @@ st.pyplot(fig)
 
 # 3. Linear regression with two inputs
 st.subheader("Linear regression")
-target = st.selectbox("Target (what to predict)", numeric_cols, index=len(numeric_cols) - 1)
+# Default to the model described in the sentence at the top (if those columns exist)
+default_target = "revenue" if "revenue" in numeric_cols else numeric_cols[-1]
+target = st.selectbox(
+    "Target (what to predict)", numeric_cols,
+    index=numeric_cols.index(default_target),
+)
 feature_options = [c for c in numeric_cols if c != target]
+preferred = [c for c in ("budget", "vote_count") if c in feature_options]
+default_features = preferred if len(preferred) == 2 else feature_options[:2]
 features = st.multiselect(
     "Choose exactly two inputs", feature_options,
-    default=feature_options[:2], max_selections=2,
+    default=default_features, max_selections=2,
 )
 if len(features) != 2:
     st.warning("Please choose exactly two inputs.")
