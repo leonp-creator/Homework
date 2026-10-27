@@ -35,7 +35,7 @@ numeric_cols = [
 if st.checkbox("Treat 0 as missing (recommended for budget/revenue)", value=True):
     for c in ("budget", "revenue"):
         if c in df.columns:
-            df[c] = df[c].replace(0, pd.NA).astype("float")
+            df[c] = df[c].astype("float").replace(0, float("nan"))
     st.caption("Rows with 0 budget or revenue are ignored in charts and the model.")
 
 if len(numeric_cols) < 3:
